@@ -20,4 +20,8 @@ export class GroupService {
     const body: ChatGroup = { createdBy, groupName };
     return this.http.post<ChatGroup>(this.API_URL, body);
   }
+
+  getGroupById(groupId: string): Observable<ChatGroup> {
+    return this.http.get<ChatGroup>(this.API_URL + '/' + groupId);
+  }
 }
