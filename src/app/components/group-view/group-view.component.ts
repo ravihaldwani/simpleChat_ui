@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { ChatService } from 'src/app/core/services/chat/chat.service';
 import { GroupService } from 'src/app/core/services/group/group.service';
 import { UserService } from 'src/app/core/services/user/user.service';
@@ -18,6 +18,7 @@ export class GroupViewComponent implements OnInit {
     private userService: UserService
   ) {}
 
+  private subscription = new Subscription();
   private groupId!: string;
   private user!: User;
   group$!: Observable<ChatGroup>;
@@ -27,9 +28,14 @@ export class GroupViewComponent implements OnInit {
     this.user = this.userService.getCurrentUser() as User;
     this.groupId = this.activatedRoute.snapshot.params['id'];
     this.group$ = this.groupService.getGroupById(this.groupId);
-    this.chatService.getChatById(this.groupId).subscribe((chat) => {
+    const sub = this.chatService.getChatById(this.groupId).subscribe((chat) => {
       this.chats.push(chat);
     });
+    this.subscription.add(sub);
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   onSend(value: string) {
