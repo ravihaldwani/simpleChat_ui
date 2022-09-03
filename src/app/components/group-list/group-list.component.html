@@ -1,0 +1,12 @@
+<div class="container">
+  <div class="p-16 ml-16">
+    <div class="flex flex-col gap-4">
+      <button mat-flat-button color="primary" (click)="onCreateGroup()">
+        Create Group
+      </button>
+      <div class="flex flex-col gap-2" *ngFor="let group of groups">
+        <app-group-tile [group]="group"></app-group-tile>
+      </div>
+    </div>
+  </div>
+</div>

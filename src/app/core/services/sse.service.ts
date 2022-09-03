@@ -7,14 +7,18 @@ import { Observable } from 'rxjs';
 export class SseService {
   constructor(private _zone: NgZone) {}
 
-  getServerSentEvent(url: string): Observable<any> {
+  getServerSentEvent<T>(url: string): Observable<T> {
+    console.log('SSE event get');
     return new Observable((observer) => {
       const eventSource = this.getEventSource(url);
+
       eventSource.onmessage = (event) => {
         this._zone.run(() => {
-          observer.next(event);
+          console.log('Group next event');
+          observer.next(JSON.parse(event.data));
         });
       };
+
       eventSource.onerror = (error) => {
         this._zone.run(() => {
           observer.error(error);
