@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { environment as env } from 'src/environments/environment';
 import { SseService } from './core/services/sse.service';
 
 @Component({
@@ -13,7 +14,7 @@ export class AppComponent {
 
   ngOnInit() {
     this.sseService
-      .getServerSentEvent('http://localhost:8080/chat/id/1')
+      .getServerSentEvent(env.baseUrl + '/chat/id/1')
       .subscribe(console.log);
   }
 }

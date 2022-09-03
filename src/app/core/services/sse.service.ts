@@ -1,10 +1,12 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
+
 @Injectable({
   providedIn: 'root',
 })
 export class SseService {
   constructor(private _zone: NgZone) {}
+
   getServerSentEvent(url: string): Observable<any> {
     return new Observable((observer) => {
       const eventSource = this.getEventSource(url);
@@ -20,6 +22,7 @@ export class SseService {
       };
     });
   }
+
   private getEventSource(url: string): EventSource {
     return new EventSource(url);
   }
