@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Observable, of, Subscription, switchMap } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { GroupService } from 'src/app/core/services/group/group.service';
 import { UserService } from 'src/app/core/services/user/user.service';
 import { AddUserDialogComponent } from '../add-user-dialog/add-user-dialog.component';

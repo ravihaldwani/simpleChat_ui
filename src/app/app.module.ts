@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -13,7 +14,6 @@ import { AddUserDialogComponent } from './components/add-user-dialog/add-user-di
 import { GroupListComponent } from './components/group-list/group-list.component';
 import { GroupTileComponent } from './components/group-tile/group-tile.component';
 import { GroupViewComponent } from './components/group-view/group-view.component';
-import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [

@@ -1,4 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { ChatService } from 'src/app/core/services/chat/chat.service';
@@ -12,6 +19,9 @@ import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
   styleUrls: ['./group-view.component.scss'],
 })
 export class GroupViewComponent implements OnInit {
+  @ViewChildren('messages') messages!: QueryList<any>;
+  @ViewChild('content') content!: ElementRef;
+
   constructor(
     private groupService: GroupService,
     private chatService: ChatService,
@@ -41,6 +51,18 @@ export class GroupViewComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
+  ngAfterViewInit() {
+    this.scrollToBottom();
+    this.messages.changes.subscribe(this.scrollToBottom);
+  }
+
+  scrollToBottom = () => {
+    try {
+      this.content.nativeElement.scrollTop =
+        this.content.nativeElement.scrollHeight;
+    } catch (err) {}
+  };
+
   onSend(value: string) {
     if (!value) return;
     const body: Chat = {
@@ -50,6 +72,6 @@ export class GroupViewComponent implements OnInit {
       sender: this.user.fullName,
     };
 
-    // this.ws.next(body);
+    this.chatService.send(body);
   }
 }

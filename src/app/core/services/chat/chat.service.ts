@@ -21,8 +21,8 @@ export class ChatService {
     return this.sseService.getServerSentEvent(this.API_URL + '/' + groupId);
   }
 
-  send(body: Chat): Observable<Chat> {
-    return this.http.post<Chat>(this.API_URL, body);
+  send(body: Chat): void {
+    this.ws.next({ type: ChatActionType.SendMessage, ...body });
   }
 
   connect(): Observable<any> {
