@@ -1,0 +1,10 @@
+<div mat-dialog-content>
+  <p class="text-xl">Enter your name!</p>
+  <mat-form-field appearance="outline">
+    <mat-label>Full Name</mat-label>
+    <input matInput [(ngModel)]="name" />
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-flat-button color="primary" (click)="onClick()">Continue</button>
+</div>

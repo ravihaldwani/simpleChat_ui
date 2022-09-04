@@ -9,7 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AddUserDialogComponent } from './components/dialog/dialog.component';
+import { AddUserDialogComponent } from './components/add-user-dialog/add-user-dialog.component';
 import { GroupListComponent } from './components/group-list/group-list.component';
 import { GroupTileComponent } from './components/group-tile/group-tile.component';
 import { GroupViewComponent } from './components/group-view/group-view.component';
@@ -32,8 +32,7 @@ import { FormsModule } from '@angular/forms';
     MatInputModule,
     MatFormFieldModule,
     MatDialogModule,
-    FormsModule
-    
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

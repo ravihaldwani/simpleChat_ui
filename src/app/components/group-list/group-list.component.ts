@@ -1,10 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Observable, Subscription, switchMap } from 'rxjs';
+import { Observable, of, Subscription, switchMap } from 'rxjs';
 import { GroupService } from 'src/app/core/services/group/group.service';
 import { UserService } from 'src/app/core/services/user/user.service';
-import { AddUserDialogComponent } from '../dialog/dialog.component';
-
+import { AddUserDialogComponent } from '../add-user-dialog/add-user-dialog.component';
 
 @Component({
   selector: 'app-group-list',
@@ -14,16 +13,19 @@ import { AddUserDialogComponent } from '../dialog/dialog.component';
 export class GroupListComponent implements OnInit, OnDestroy {
   groups: ChatGroup[] = [];
   subscription = new Subscription();
-  user!: User;
+  user: User | null = null;
 
   constructor(
     private groupService: GroupService,
     private userService: UserService,
     private dialog: MatDialog
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    console.log('Group initiated');
+    this.user = this.userService.getCurrentUser();
+    if (!this.user) {
+      this.openAddUserDialog().subscribe((user) => (this.user = user));
+    }
     const sub = this.groupService
       .getAllGroups()
       .subscribe((group) => this.groups.push(group));
@@ -31,19 +33,12 @@ export class GroupListComponent implements OnInit, OnDestroy {
   }
 
   onCreateGroup() {
-    let user = this.userService.getCurrentUser();
-    if (!user) {
-      this.openDialog().pipe(switchMap(
-        (user) => this.groupService.createGroup(user.fullName, 'Group1')
-      )).subscribe(console.log);
-    } else {
-      this.groupService
-        .createGroup(user.fullName, 'Group1')
-        .subscribe(console.log);
-    }
+    this.groupService
+      .createGroup(this.user!.fullName, 'Group1')
+      .subscribe(console.log);
   }
 
-  openDialog(): Observable<User> {
+  openAddUserDialog(): Observable<User> {
     const dialogRef = this.dialog.open(AddUserDialogComponent, {
       width: '250px',
     });

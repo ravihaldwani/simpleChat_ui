@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { ChatService } from 'src/app/core/services/chat/chat.service';
 import { GroupService } from 'src/app/core/services/group/group.service';
 import { UserService } from 'src/app/core/services/user/user.service';
+import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 
 @Component({
   selector: 'app-group-view',
@@ -18,18 +19,26 @@ export class GroupViewComponent implements OnInit {
     private userService: UserService
   ) {}
 
+  private subscription = new Subscription();
   private groupId!: string;
   private user!: User;
   group$!: Observable<ChatGroup>;
   chats: Chat[] = [];
+  ws!: WebSocketSubject<Chat>;
 
   ngOnInit(): void {
     this.user = this.userService.getCurrentUser() as User;
     this.groupId = this.activatedRoute.snapshot.params['id'];
     this.group$ = this.groupService.getGroupById(this.groupId);
-    this.chatService.getChatById(this.groupId).subscribe((chat) => {
-      this.chats.push(chat);
-    });
+    const sub = this.chatService
+      .getMessages()
+      .subscribe((chat) => this.chats.push(chat));
+    this.chatService.enterGroup(this.groupId);
+    this.subscription.add(sub);
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   onSend(value: string) {
@@ -40,6 +49,7 @@ export class GroupViewComponent implements OnInit {
       receiver: '',
       sender: this.user.fullName,
     };
-    this.chatService.send(body).subscribe(console.log);
+
+    // this.ws.next(body);
   }
 }

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddUserDialogComponent } from './dialog.component';
+import { AddUserDialogComponent } from './add-user-dialog.component';
 
 describe('DialogComponent', () => {
   let component: AddUserDialogComponent;
@@ -8,9 +8,8 @@ describe('DialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AddUserDialogComponent ]
-    })
-    .compileComponents();
+      declarations: [AddUserDialogComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
