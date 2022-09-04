@@ -11,6 +11,10 @@ export class UserService {
     return user && JSON.parse(user);
   }
 
+  isUserPresent(): boolean {
+    return !!localStorage.getItem('user');
+  }
+
   createUser(fullName: string): User {
     const user: User = { fullName };
     localStorage.setItem('user', JSON.stringify(user));
