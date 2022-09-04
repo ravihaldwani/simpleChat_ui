@@ -27,15 +27,14 @@ export class GroupViewComponent implements OnInit {
   ws!: WebSocketSubject<Chat>;
 
   ngOnInit(): void {
-    this.ws = webSocket('ws://localhost:8080/ws/echo');
-    this.ws.subscribe(console.log);
     this.user = this.userService.getCurrentUser() as User;
     this.groupId = this.activatedRoute.snapshot.params['id'];
     this.group$ = this.groupService.getGroupById(this.groupId);
-    // const sub = this.chatService.getChatById(this.groupId).subscribe((chat) => {
-    //   this.chats.push(chat);
-    // });
-    // this.subscription.add(sub);
+    const sub = this.chatService
+      .getMessages()
+      .subscribe((chat) => this.chats.push(chat));
+    this.chatService.enterGroup(this.groupId);
+    this.subscription.add(sub);
   }
 
   ngOnDestroy() {
@@ -51,7 +50,6 @@ export class GroupViewComponent implements OnInit {
       sender: this.user.fullName,
     };
 
-    this.ws.next(body);
-    // this.chatService.send(body).subscribe(console.log);
+    // this.ws.next(body);
   }
 }
