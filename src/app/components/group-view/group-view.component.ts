@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
 import { ChatService } from 'src/app/core/services/chat/chat.service';
 import { GroupService } from 'src/app/core/services/group/group.service';
 import { UserService } from 'src/app/core/services/user/user.service';
@@ -19,11 +20,13 @@ export class GroupViewComponent implements OnInit {
 
   private groupId!: string;
   private user!: User;
+  group$!: Observable<ChatGroup>;
   chats: Chat[] = [];
 
   ngOnInit(): void {
     this.user = this.userService.getCurrentUser() as User;
     this.groupId = this.activatedRoute.snapshot.params['id'];
+    this.group$ = this.groupService.getGroupById(this.groupId);
     this.chatService.getChatById(this.groupId).subscribe((chat) => {
       this.chats.push(chat);
     });
